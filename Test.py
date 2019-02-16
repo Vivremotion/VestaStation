@@ -1,2 +1,5 @@
 def do(parameters, data):
-    return "Cool!"
+    return [{
+        "type": "test",
+        value: "Cool!"
+    }]

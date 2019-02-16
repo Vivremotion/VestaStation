@@ -13,12 +13,24 @@ class BluetoothModule:
     clientSocket = None
     clientInfo = None
     socketOpen = False
+    localAddress = ''
 
-    def send(self, data):
+
+    def getAddress(self):
+        hciOutput = subprocess.check_output(['hcitool', 'dev']).decode('utf8')
+        bdaddr = re.search("([0-9A-F]{2}[:-]){5}([0-9A-F]{2})", hciOutput).group(0)
+        return bdaddr
+
+
+    def send(self, route, data):
+        dataToSend = {
+            "stationId": self.localAddress,
+            "route": route,
+            "data": data
+        }
         try:
-            if not type(data) is str:
-                data = json.dumps(data)
-            self.clientSocket.send(data)
+            dataToSend = json.dumps(dataToSend)
+            self.clientSocket.send(dataToSend)
             self.clientSocket.send('\n')
         except Exception as error:
             print(str(error))
@@ -33,7 +45,7 @@ class BluetoothModule:
             action = getattr(module, actionName, None)
             if not callable(action):
                 raise invalidAction(actionName)
-            self.send(action(parameters, data))
+            self.send(data["route"], action(parameters, data))
         except Exception as error:
             print(str(error))
 
@@ -60,7 +72,7 @@ class BluetoothModule:
         self.port = port
         self.socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
+        self.localAddress = self.getAddress()
         try:
             self.socket.bind(('', port))
             self.socketOpen = True
