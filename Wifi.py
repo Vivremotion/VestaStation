@@ -1,5 +1,3 @@
-
-
 from wifi import Cell, Scheme
 
 def _getValues(network):
@@ -40,7 +38,7 @@ def connect(parameters, data):
             scheme.save()
         else:
             connection = "Invalid ssid"
-    if not connection:
+    if not 'connection' in locals():
         connection = scheme.activate()
     return {
         "type": 'wifiConnection',
