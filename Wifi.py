@@ -27,6 +27,7 @@ def connectIfExists(parameters, data):
        scheme.activate()
     return {
         "type": "wifiConnectIfExists",
+        "ssid": data["ssid"]
         "value": True if not scheme != None else False
     }
 
