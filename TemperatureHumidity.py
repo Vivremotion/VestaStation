@@ -7,7 +7,7 @@ port = 4
 
 def get(parameters, data):
     humidity, temperature = Adafruit_DHT.read_retry(sensorNumber, port)
-    date = datetime.datetime.now()
+    date = str(datetime.datetime.now())
     return [{
         "type": 'temperature',
         "value": temperature,
