@@ -6,9 +6,9 @@ import os
 
 def _updateWpa(ssid, psk=False):
     wpaPath = '/etc/wpa_supplicant/wpa_supplicant.conf'
-    file = open(wpaPath, 'r+')
+    file = open(wpaPath, 'r')
     content = file.read()
-    networkText = re.search('(network=\{{\n.*ssid="{ssid}"\n(.|\n)*?\}})+?'.format(ssid=ssid), content)
+    networkText = re.search('(network=\{{\n.*ssid="{ssid}"\n(.|\n)*?\}}\n*)+?'.format(ssid=ssid), content)
     if not networkText and not psk:
         return False
     if networkText:
@@ -31,9 +31,9 @@ ctrl_interface=/var/run/wpa_supplicant\n"""
   ssid="{ssid}"
   psk="{psk}"
   priority=2
-}}""".format(ssid=ssid, psk=psk)
-    os.truncate(wpaPath, 0)
-    file.write(content + '\n' + newNetwork)
+}}\n""".format(ssid=ssid, psk=psk)
+    file = open(wpaPath, 'w')
+    file.write(content + newNetwork)
     return True
 
 def _getValues(network):
@@ -67,8 +67,8 @@ def connect(parameters, data):
     output = subprocess.check_output('sudo wpa_cli -i wlan0 reconfigure', shell=True).decode('utf8')
     if not 'OK' in output:
         return answer
-    # meh
-    time.sleep(8)
+    # todo: find a solution to get rid of that time.sleep
+    time.sleep(10)
     current = subprocess.check_output('iwgetid -r', shell=True).decode('utf8')
     print(current)
     if not current:
