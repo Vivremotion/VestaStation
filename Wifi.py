@@ -53,6 +53,17 @@ def getAll(parameters, data):
         "value": networks
     }]
 
+def _getCurrent():
+    current = subprocess.check_output('iwgetid -r', shell=True).decode('utf8')
+    if not current:
+        return ''
+    return current.replace('\n', '')
+
+def getCurrentSSID(parameters, data):
+    return {
+        "ssid": _getCurrent()
+    }
+
 def connect(parameters, data):
     if not 'passkey' in data:
         data['passkey'] = None
@@ -69,12 +80,10 @@ def connect(parameters, data):
         return answer
     # todo: find a solution to get rid of that time.sleep
     time.sleep(10)
-    current = subprocess.check_output('iwgetid -r', shell=True).decode('utf8')
-    print(current)
-    if not current:
+    current = _getCurrent()
+    if len(current) == 0:
         return answer
-    current = current.replace('\n', '')
-    print(current)
+    print('Now connected to: '+current)
     if not current == data['ssid']:
         return answer
     answer['connected'] = True
