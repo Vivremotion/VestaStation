@@ -42,6 +42,10 @@ class BluetoothModule:
         try:
             if not 'route' in data:
                 raise Exception('No route provided')
+            if not 'address' in data:
+                raise Exception('No address')
+            if not data['address'] == self.localAddress:
+                return
             moduleName, actionName, *parameters = data['route'].split('/')
             module = importlib.import_module(moduleName)
             action = getattr(module, actionName, None)
