@@ -15,8 +15,10 @@ def get(parameters, data):
 
 def set(parameters, data):
     settings = get(None, None)
-    print(type(settings))
     settings.update(data["settings"])
     file = open(settingsFilePath, 'w')
     file.write(json.dumps(settings))
+    if 'name' in data['settings']:
+        file = open('/etc/machine-info', 'a+')
+        file.write('PRETTY_HOSTNAME='+data['settings']['name'])
     return settings
