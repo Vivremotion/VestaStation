@@ -71,6 +71,7 @@ class BluetoothModule:
                 self.route(json.loads(data))
             except Exception as error:
                 print(str(error))
+                subprocess.check_output('service bluetooth restart', shell=True).decode('utf8')
                 break
 
 
