@@ -7,7 +7,7 @@ def get(parameters, data):
     fileExists = os.path.isfile(settingsFilePath)
     if not fileExists:
         file = open(settingsFilePath, 'a+')
-        file.write(json.dumps({}))
+        file.write(json.dumps({ 'new': True }))
     file = open(settingsFilePath, 'r')
     fileContent = file.read()
     settings = json.loads(fileContent)
