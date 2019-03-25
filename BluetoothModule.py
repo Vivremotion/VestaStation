@@ -46,12 +46,15 @@ class BluetoothModule:
                 raise Exception('No address')
             if not data['address'] == self.localAddress:
                 return
-            moduleName, actionName, *parameters = data['route'].split('/')
+            route = data["route"]
+            moduleName, actionName, *parameters = route.split('/')
             module = importlib.import_module(moduleName)
             action = getattr(module, actionName, None)
             if not callable(action):
                 raise invalidAction(actionName)
-            self.send(data["route"], action(parameters, data))
+            del data['route']
+            del data['address']
+            self.send(route, action(parameters, data))
         except Exception as error:
             print(str(error))
 
@@ -97,8 +100,3 @@ class BluetoothModule:
             print(str(error))
             print("Disconnected")
             pass
-
-
-if __name__ == "__main__":
-    bluetoothModule = BluetoothModule()
-    bluetoothModule.initialize(int(sys.argv[1]))
