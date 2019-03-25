@@ -2,7 +2,7 @@ import sys
 import datetime
 import Adafruit_DHT
 
-sensorNumber = 11
+sensorNumber = 22
 port = 4
 
 def get(parameters, data):
