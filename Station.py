@@ -16,7 +16,7 @@ def initialize():
         file = open(stationFilePath, 'a+')
         file.write(json.dumps(station))
 
-def get(parameters, data):
+def get(parameters=None, data=None):
     initialize()
     file = open(stationFilePath, 'r')
     fileContent = file.read()

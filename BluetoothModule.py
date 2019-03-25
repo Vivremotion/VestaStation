@@ -5,6 +5,7 @@ import json
 import importlib
 import subprocess
 import re
+import Station
 
 def invalidAction(name):
     return Exception('\'%s\' is not a correct action' % (name))
@@ -16,6 +17,7 @@ class BluetoothModule:
     clientInfo = None
     socketOpen = False
     localAddress = ''
+    station = Station.get(None, None)
 
 
     def getAddress(self):
@@ -26,7 +28,8 @@ class BluetoothModule:
 
     def send(self, route, data):
         dataToSend = {
-            "stationId": self.localAddress,
+            "stationId": self.station.id,
+            "address": self.localAddress,
             "route": route,
             "data": data
         }
