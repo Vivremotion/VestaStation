@@ -1,4 +1,6 @@
 {
-    "new": true,
-    "measurementsInterval": 30
+    "settings": {
+        "new": true,
+        "measurementsInterval": 30
+    }
 }
