@@ -21,7 +21,7 @@ class Initializer():
                 if not isinstance(values, list):
                     values = [values]
                 for value in values:
-                    value.update({ 'id': self.station['id'] })
+                    value.update({ 'stationId': self.station['id'] })
                     firebase.send('measurements', None, value)
                 print(moduleName+' measurement sent to firestore')
             time.sleep(self.station['settings']['measurementsInterval'])
