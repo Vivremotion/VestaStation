@@ -1,4 +1,4 @@
-def do(parameters, data):
+def do(data):
     return [{
         "type": "test",
         "value": "Cool!"

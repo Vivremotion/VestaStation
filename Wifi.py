@@ -50,7 +50,7 @@ def _getValues(network):
         "address": network.address
     }
 
-def getAll(parameters, data):
+def getAll(data):
     networks = []
     for network in Cell.all('wlan0'):
         networks.append(_getValues(network))
@@ -66,12 +66,12 @@ def _getCurrent():
         return ''
     return current.replace('\n', '')
 
-def getCurrentSSID(parameters, data):
+def getCurrentSSID(data):
     return {
         "ssid": _getCurrent()
     }
 
-def connect(parameters, data):
+def connect(data):
     if not 'passkey' in data:
         data['passkey'] = None
     valid = _updateWpa(data['ssid'], data['passkey'])
@@ -96,7 +96,7 @@ def connect(parameters, data):
     answer['connected'] = True
     return answer
 
-def disconnect(parameters, data):
+def disconnect(data):
     answer = {
         "route": "Wifi/disconnect",        "disconnected": False
         "disconnected": False

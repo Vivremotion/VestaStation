@@ -50,14 +50,14 @@ class BluetoothModule:
             if not data['address'] == self.localAddress:
                 return
             route = data["route"]
-            moduleName, actionName, *parameters = route.split('/')
+            moduleName, actionName = route.split('/')
             module = importlib.import_module(moduleName)
             action = getattr(module, actionName, None)
             if not callable(action):
                 raise invalidAction(actionName)
             del data['route']
             del data['address']
-            self.send(route, action(parameters, data))
+            self.send(route, action(data))
         except Exception as error:
             print(str(error))
 
