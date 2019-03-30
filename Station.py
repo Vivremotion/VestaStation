@@ -1,13 +1,17 @@
 import json
 import os
+import utils
 from Firebase import firebase
 
 stationFilePath = '/usr/share/Station/station.json'
 station = {
+    'address': utils.getBluetoothAddress()
     'settings': {
         'new': True,
         'measurementsInterval': 30 #seconds
-    }
+    },
+    'read': [],
+    'write': []
 }
 
 def initialize():
@@ -16,9 +20,12 @@ def initialize():
         file = open(stationFilePath, 'a+')
         file.write(json.dumps(station))
 
-def _edit(station):
+def _update(station):
     file = open(stationFilePath, 'w')
     file.write(json.dumps(station))
+    print('Station updated: ')
+    print(station)
+    print('\n')
     firebase.send('stations', station['id'], station)
     return station
 
@@ -40,7 +47,7 @@ def set(data):
     if 'name' in station['settings']:
         file = open('/etc/machine-info', 'w')
         file.write('PRETTY_HOSTNAME='+station['settings']['name'])
-    _edit(station)
+    _update(station)
     return station
 
 def addWriter(data):
@@ -49,7 +56,8 @@ def addWriter(data):
     initialize()
     station = get()
     if not data['uid'] in station['write']
-    # if the user has not the read right on the station, add them
+        station['write'].append(data['uid'])
+        _update(station)
     return 'OK'
     
 def addReader(data):
@@ -57,5 +65,7 @@ def addReader(data):
         return { 'error': 'Missing uid' }
     initialize()
     station = get()
-    # if the user has not the read right on the station, add them
+    if not data['uid'] in station['read']
+        station['read'].append(data['uid'])
+        _update(station)
     return 'OK'

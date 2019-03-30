@@ -6,6 +6,7 @@ import importlib
 import subprocess
 import re
 import Station
+import utils
 
 def invalidAction(name):
     return Exception('\'%s\' is not a correct action' % (name))
@@ -19,16 +20,9 @@ class BluetoothModule:
     localAddress = ''
     station = Station.get(None, None)
 
-
-    def getAddress(self):
-        hciOutput = subprocess.check_output(['hcitool', 'dev']).decode('utf8')
-        bdaddr = re.search("([0-9A-F]{2}[:-]){5}([0-9A-F]{2})", hciOutput).group(0)
-        return bdaddr
-
-
     def send(self, route, data):
         dataToSend = {
-            "stationId": self.station.id,
+            "stationId": self.station['id'],
             "address": self.localAddress,
             "route": route,
             "data": data
@@ -85,7 +79,7 @@ class BluetoothModule:
         self.port = port
         self.socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.localAddress = self.getAddress()
+        self.localAddress = utils.getBluetoothAddress()
         try:
             self.socket.bind(('', port))
             self.socketOpen = True
