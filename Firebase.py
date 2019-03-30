@@ -19,4 +19,13 @@ class Firebase:
         document.set(value)
         return document
 
+    def get(self, collection, conditions):
+        collectionRef = self.db.collection(collection)
+        for condition in conditions:
+            collectionRef = collectionRef.where(condition[0], condition[1], condition[2])
+        documents = list(collectionRef.get())
+        print(documents)
+        print('\n')
+        return documents
+
 firebase = Firebase()
