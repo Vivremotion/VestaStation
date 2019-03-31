@@ -3,7 +3,7 @@ import os
 import utils
 from Firebase import firebase
 
-stationFilePath = '/usr/share/Station/station.json'
+stationFilePath = '/usr/share/VestaStation/station.json'
 station = {
     'address': utils.getBluetoothAddress(),
     'settings': {

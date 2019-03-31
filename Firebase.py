@@ -3,7 +3,7 @@ import os
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-serviceAccountPath = '/usr/share/Station/firebaseServiceAccount.json'
+serviceAccountPath = '/usr/share/VestaStation/firebaseServiceAccount.json'
 
 class Firebase:
     db = {}

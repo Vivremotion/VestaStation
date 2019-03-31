@@ -2,6 +2,7 @@ import bluetooth
 import sys
 import socket
 import json
+from json import JSONDecoder
 import importlib
 import subprocess
 import re
