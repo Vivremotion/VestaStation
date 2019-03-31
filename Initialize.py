@@ -17,7 +17,7 @@ class Initializer():
         while True:
             for moduleName in sensors:
                 module = importlib.import_module(moduleName)
-                values = module.get(None, None)
+                values = module.get()
                 if not isinstance(values, list):
                     values = [values]
                 for value in values:
@@ -28,7 +28,7 @@ class Initializer():
 
     def initialize(self):
         Station.initialize()
-        self.station = Station.get(None, None)
+        self.station = Station.get()
         print('Station:')
         print(self.station)
         firebase.initialize()

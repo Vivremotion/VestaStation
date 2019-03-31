@@ -5,7 +5,7 @@ from Firebase import firebase
 
 stationFilePath = '/usr/share/Station/station.json'
 station = {
-    'address': utils.getBluetoothAddress()
+    'address': utils.getBluetoothAddress(),
     'settings': {
         'new': True,
         'measurementsInterval': 30 #seconds
@@ -55,7 +55,7 @@ def addWriter(data):
         return { 'error': 'Missing uid' }
     initialize()
     station = get()
-    if not data['uid'] in station['write']
+    if not data['uid'] in station['write']:
         station['write'].append(data['uid'])
         _update(station)
     return 'OK'
@@ -65,7 +65,7 @@ def addReader(data):
         return { 'error': 'Missing uid' }
     initialize()
     station = get()
-    if not data['uid'] in station['read']
+    if not data['uid'] in station['read']:
         station['read'].append(data['uid'])
         _update(station)
     return 'OK'
