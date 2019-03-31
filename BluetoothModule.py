@@ -11,6 +11,17 @@ import utils
 def invalidAction(name):
     return Exception('\'%s\' is not a correct action' % (name))
 
+def decodeStacked(data, pos=0, decoder=JSONDecoder()):
+    while True:
+        try:
+            obj, pos = decoder.raw_decode(data, pos)
+            if len(data) == pos:
+                yield obj
+                return
+        except Exception as error:
+            print(str(error))
+        yield obj
+
 class BluetoothModule:
     port = 1
     socket = None
@@ -18,7 +29,7 @@ class BluetoothModule:
     clientInfo = None
     socketOpen = False
     localAddress = ''
-    station = Station.get(None, None)
+    station = Station.get()
 
     def send(self, route, data):
         dataToSend = {
@@ -67,8 +78,14 @@ class BluetoothModule:
                     self.socket.close()
                     self.socketOpen = False
                     break
-                print("Received %s" % data)
-                self.route(json.loads(data))
+                try:
+                    for request in decodeStacked(data):
+                        if len(request):
+                            print("Received %s" % request)
+                            self.route(request)
+                except Exception as error:
+                    print(str(error))
+                    pass
             except Exception as error:
                 print(str(error))
                 subprocess.check_output('service bluetooth restart', shell=True).decode('utf8')
