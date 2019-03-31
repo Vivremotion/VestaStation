@@ -35,7 +35,7 @@ class Initializer():
         print('Firebase initialized')
         if not 'id' in self.station:
             document = firebase.send('stations', None, self.station)
-            Station.set(None, {
+            Station.set({
                 'id': document.id
             })
             self.station['id'] = document.id
