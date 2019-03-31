@@ -33,6 +33,7 @@ class BluetoothModule:
     station = Station.get()
 
     def send(self, route, data):
+        self.station = Station.get()
         dataToSend = {
             "stationId": self.station['id'],
             "address": self.localAddress,
