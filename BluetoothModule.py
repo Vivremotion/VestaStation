@@ -20,7 +20,7 @@ def decodeStacked(data, pos=0, decoder=JSONDecoder()):
                 yield obj
                 return
         except Exception as error:
-            print(str(error))
+            print('An error occured while decoding incoming data from bluetooth: ', str(error))
         yield obj
 
 class BluetoothModule:
@@ -44,7 +44,7 @@ class BluetoothModule:
             self.clientSocket.send(dataToSend)
             self.clientSocket.send('\n')
         except Exception as error:
-            print(str(error))
+            print('An error occured while sending via bluetooth: ', str(error))
 
 
     def route(self, data):
@@ -65,7 +65,7 @@ class BluetoothModule:
             del data['address']
             self.send(route, action(data))
         except Exception as error:
-            print(str(error))
+            print('An error occured in the bluetooth module while routing', str(error))
 
 
     def listen(self):
@@ -85,10 +85,10 @@ class BluetoothModule:
                             print("Received %s" % request)
                             self.route(request)
                 except Exception as error:
-                    print(str(error))
+                    print('An error occured in the bluetooth module after data was received: ', str(error))
                     pass
             except Exception as error:
-                print(str(error))
+                print('An error occured in the bluetooth module while listening: ', str(error))
                 subprocess.check_output('service bluetooth restart', shell=True).decode('utf8')
                 break
 
@@ -112,6 +112,6 @@ class BluetoothModule:
                     self.listen()
                 else: break
         except Exception as error:
-            print(str(error))
+            print('An error occured in the blueototh module: ', str(error))
             print("Disconnected")
             pass
