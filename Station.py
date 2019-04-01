@@ -8,7 +8,7 @@ station = {
     'address': utils.getBluetoothAddress(),
     'settings': {
         'new': True,
-        'measurementsInterval': 30 #seconds
+        'readingsInterval': 30 #seconds
     },
     'read': [],
     'write': []

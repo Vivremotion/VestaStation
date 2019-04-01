@@ -13,7 +13,7 @@ class Initializer():
         bluetoothModule.initialize(1)
         print('Bluetooth initialized')
 
-    def sendMeasurements(self):
+    def sendReadings(self):
         while True:
             for moduleName in sensors:
                 module = importlib.import_module(moduleName)
@@ -22,9 +22,9 @@ class Initializer():
                     values = [values]
                 for value in values:
                     value.update({ 'stationId': self.station['id'] })
-                    firebase.send('measurements', None, value)
-                print(moduleName+' measurement sent to firestore')
-            time.sleep(self.station['settings']['measurementsInterval'])
+                    firebase.send('readings', None, value)
+                print(moduleName+' readings sent to firestore')
+            time.sleep(self.station['settings']['readingsInterval'])
 
     def initialize(self):
         Station.initialize()
@@ -43,8 +43,8 @@ class Initializer():
 
         bluetoothThread = threading.Thread(target=self.bluetooth)
         bluetoothThread.start()
-        measurementsThread = threading.Thread(target=self.sendMeasurements)
-        measurementsThread.start()
+        readingsThread = threading.Thread(target=self.sendReadings)
+        readingsThread.start()
 
 initializer = Initializer()
 initializer.initialize()
